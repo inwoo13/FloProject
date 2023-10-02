@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
             val returnString = result.data?.getStringExtra("songsong")
             Toast.makeText(applicationContext, returnString, Toast.LENGTH_SHORT).show()
         }
-
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +45,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("singer", song.singer)
             getResultText.launch(intent)
         }
+
     }
 
     private fun initBottomNavigation(){

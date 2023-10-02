@@ -19,6 +19,20 @@ class AlbumFragment : Fragment() {
     ): View? {
         binding = FragmentAlbumBinding.inflate(inflater, container, false)
 
+        val title = arguments?.getString("albumTitle")
+        val singer = arguments?.getString("albumSinger")
+
+        binding.albumMusicTitleTv.text = title
+        binding.albumSingerNameTv.text = singer
+
+        binding.albumBackIv.setOnClickListener {
+            val homeFragment = HomeFragment()
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.main_frm, homeFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
         return binding.root
     }
 }
