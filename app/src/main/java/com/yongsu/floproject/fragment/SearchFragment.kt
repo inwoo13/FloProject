@@ -1,15 +1,15 @@
-package com.yongsu.floproject
+package com.yongsu.floproject.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.yongsu.floproject.databinding.FragmentLockerBinding
+import com.yongsu.floproject.databinding.FragmentSearchBinding
 
-class LockerFragment : Fragment() {
+class SearchFragment : Fragment() {
 
-    private var _binding: FragmentLockerBinding? = null
+    private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -17,7 +17,7 @@ class LockerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentLockerBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         return binding.root
     }

@@ -1,4 +1,4 @@
-package com.yongsu.floproject
+package com.yongsu.floproject.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,11 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.yongsu.floproject.databinding.FragmentHomeBinding
-import com.yongsu.floproject.databinding.FragmentLookBinding
 
-class LookFragment : Fragment() {
+class HomeFragment : Fragment() {
 
-    private var _binding: FragmentLookBinding? = null
+    private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -18,7 +17,7 @@ class LookFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentLookBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         return binding.root
     }
