@@ -9,6 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:backgroundTint="@color/white"
         tools:context=".SongActivity">
 
         <ImageButton
@@ -249,11 +250,33 @@
             app:layout_constraintTop_toTopOf="@+id/song_player_layout" />
 
         <ImageView
-            android:id="@+id/song_random_iv"
+            android:id="@+id/song_repeat_active_iv"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="30dp"
+            android:src="@drawable/baseline_refresh_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/song_player_layout"
+            app:layout_constraintStart_toStartOf="@+id/song_progressbar_backgroud_view"
+            app:layout_constraintTop_toTopOf="@+id/song_player_layout" />
+
+        <ImageView
+        android:id="@+id/song_random_iv"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="30dp"
+        android:src="@drawable/nugu_btn_random_inactive"
+        app:layout_constraintBottom_toBottomOf="@+id/song_player_layout"
+        app:layout_constraintEnd_toEndOf="@+id/song_progressbar_backgroud_view"
+        app:layout_constraintTop_toTopOf="@+id/song_player_layout" />
+
+        <ImageView
+            android:id="@+id/song_random_active_iv"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="30dp"
-            android:src="@drawable/nugu_btn_random_inactive"
+            android:src="@drawable/baseline_refresh_24"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/song_player_layout"
             app:layout_constraintEnd_toEndOf="@+id/song_progressbar_backgroud_view"
             app:layout_constraintTop_toTopOf="@+id/song_player_layout" />

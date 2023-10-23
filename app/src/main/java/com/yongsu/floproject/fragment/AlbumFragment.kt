@@ -25,6 +25,12 @@ class AlbumFragment : Fragment() {
         binding.albumMusicTitleTv.text = title
         binding.albumSingerNameTv.text = singer
 
+        initAlbumback()
+
+        return binding.root
+    }
+
+    private fun initAlbumback(){
         binding.albumBackIv.setOnClickListener {
             val homeFragment = HomeFragment()
             val transaction = parentFragmentManager.beginTransaction()
@@ -32,7 +38,7 @@ class AlbumFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
-
-        return binding.root
     }
+
+
 }

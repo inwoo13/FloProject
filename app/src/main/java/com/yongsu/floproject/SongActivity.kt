@@ -34,6 +34,8 @@ class SongActivity : AppCompatActivity() {
         }
 
         initPlayPauseBtn()
+        initRepeatBtn()
+        initRandomBtn()
     }
 
     private fun initPlayPauseBtn(){
@@ -45,6 +47,32 @@ class SongActivity : AppCompatActivity() {
             songPauseIv.setOnClickListener {
                 songMiniplayerIv.visibility = View.VISIBLE
                 songPauseIv.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun initRepeatBtn(){
+        with(binding){
+            songRepeatIv.setOnClickListener {
+                songRepeatIv.visibility = View.GONE
+                songRepeatActiveIv.visibility = View.VISIBLE
+            }
+            songRepeatActiveIv.setOnClickListener {
+                songRepeatActiveIv.visibility = View.GONE
+                songRepeatIv.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun initRandomBtn(){
+        with(binding){
+            songRandomIv.setOnClickListener {
+                songRandomIv.visibility = View.GONE
+                songRandomActiveIv.visibility = View.VISIBLE
+            }
+            songRandomActiveIv.setOnClickListener {
+                songRandomActiveIv.visibility = View.GONE
+                songRandomIv.visibility = View.VISIBLE
             }
         }
     }

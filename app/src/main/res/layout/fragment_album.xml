@@ -215,22 +215,17 @@
                         android:text="내 취향 MIX"
                         android:textColor="@color/black" />
 
+
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/song_mixoff_tg"
+                        android:id="@+id/song_mix_sw"
                         android:layout_width="50dp"
                         android:layout_height="25dp"
                         android:layout_gravity="center"
                         android:thumb="@drawable/thumb_selector"
-                        app:thumbTint="@color/white"
-                        app:trackTint="@color/switch_track"/>
+                        android:layout_marginStart="5dp"
+                        app:trackTint="@color/switch_track" />
 
-                    <ImageView
-                        android:id="@+id/song_mixon_tg"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/btn_toggle_on"
-                        android:visibility="gone" />
+                    <!--app:track="@drawable/track_selector"-->
 
 
                 </LinearLayout>
