@@ -28,6 +28,10 @@ class HomeFragment : Fragment() {
             initAlbumFragment(binding.homeTodaySongTitleSecondTv.text.toString(),
                 binding.homeTodaySingerSecondTv.text.toString())
         }
+        binding.homeTodayAlbumThirdIv.setOnClickListener {
+            initAlbumFragment(binding.homeTodaySongTitleThirdTv.text.toString(),
+                binding.homeTodaySingerThirdTv.text.toString())
+        }
 
         return binding.root
     }
