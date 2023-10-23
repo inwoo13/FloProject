@@ -5,23 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.yongsu.floproject.R
-import com.yongsu.floproject.databinding.FragmentAlbumBinding
-import com.yongsu.floproject.databinding.FragmentDetailBinding
+import com.yongsu.floproject.databinding.FragmentSavedSongBinding
 
-class DetailFragment : Fragment() {
+class SavedSongFragment : Fragment() {
 
-    private var _binding : FragmentDetailBinding? = null
+    private var _binding: FragmentSavedSongBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentDetailBinding.inflate(inflater,container,false)
+        _binding = FragmentSavedSongBinding.inflate(inflater, container, false)
 
         return binding.root
     }
+
 }

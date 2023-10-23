@@ -277,16 +277,25 @@
                 app:layout_constraintStart_toStartOf="@id/home_today_songTitle_third_tv"
                 app:layout_constraintTop_toBottomOf="@id/home_today_songTitle_third_tv"/>
 
-            <ImageView
+<!--            <ImageView-->
+<!--                android:id="@+id/home_banner_vp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                android:src="@drawable/img_home_viewpager_exp"-->
+<!--                android:layout_marginTop="15dp"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/home_today_singer_third_tv"/>-->
+
+            <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/home_banner_vp"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/img_home_viewpager_exp"
-                android:layout_marginTop="15dp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/home_today_singer_third_tv"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_today_singer_third_tv" />
 
             <TextView
                 android:id="@+id/home_daily_music_title_tv"
