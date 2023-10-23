@@ -245,7 +245,7 @@
             android:layout_marginEnd="30dp"
             android:src="@drawable/nugu_btn_repeat_inactive"
             app:layout_constraintBottom_toBottomOf="@+id/song_player_layout"
-            app:layout_constraintEnd_toStartOf="@+id/song_player_layout"
+            app:layout_constraintStart_toStartOf="@+id/song_progressbar_backgroud_view"
             app:layout_constraintTop_toTopOf="@+id/song_player_layout" />
 
         <ImageView
@@ -255,7 +255,7 @@
             android:layout_marginStart="30dp"
             android:src="@drawable/nugu_btn_random_inactive"
             app:layout_constraintBottom_toBottomOf="@+id/song_player_layout"
-            app:layout_constraintStart_toEndOf="@+id/song_player_layout"
+            app:layout_constraintEnd_toEndOf="@+id/song_progressbar_backgroud_view"
             app:layout_constraintTop_toTopOf="@+id/song_player_layout" />
 
         <ImageView
