@@ -86,6 +86,7 @@
 
 
                 <ImageView
+                    android:id="@+id/testbtn"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:src="@drawable/btn_miniplayer_go_list"

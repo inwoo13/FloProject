@@ -46,6 +46,11 @@ class MainActivity : AppCompatActivity() {
             getResultText.launch(intent)
         }
 
+        binding.testbtn.setOnClickListener {
+            val intent = Intent(this, TestActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun initBottomNavigation(){
