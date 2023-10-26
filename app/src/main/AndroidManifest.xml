@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FLO">
         <activity
+            android:name=".SplashActivity"
+            android:exported="false" />
+        <activity
             android:name=".TestActivity"
             android:exported="false" />
         <activity
