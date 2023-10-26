@@ -35,15 +35,16 @@ class MainActivity : AppCompatActivity() {
         initBottomNavigation()
 
         val song = Song(binding.mainPlayingSongTitleTv.text.toString(),
-            binding.mainPlayingSingerTv.text.toString())
-
-        Log.d("Song", "제목 : ${song.title} / 가수 : ${song.singer}")
+            binding.mainPlayingSingerTv.text.toString(), 0, 60, false)
 
         binding.mainPlayerCl.setOnClickListener {
             val intent = Intent(this, SongActivity::class.java)
             // title이라는 key값으로 song.title을 intent에 담아줌
             intent.putExtra("title", song.title)
             intent.putExtra("singer", song.singer)
+            intent.putExtra("second", song.second)
+            intent.putExtra("playTime", song.playTime)
+            intent.putExtra("isPlaying", song.isPlaying)
             getResultText.launch(intent)
         }
 
