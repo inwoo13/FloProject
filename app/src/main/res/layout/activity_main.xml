@@ -26,7 +26,25 @@
             android:paddingVertical="5dp"
             android:background="#F9F9F9">
 
+            <SeekBar
+                android:id="@+id/main_progress_sb"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginBottom="3dp"
+                android:background="@null"
+                android:paddingHorizontal="0dp"
+                android:progress="0"
+                android:progressBackgroundTint="@color/song_player_bg"
+                android:progressTint="@color/song_player"
+                android:thumb="@color/transparent"
+                android:max="100000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/linearLayout1"/>
+
             <LinearLayout
+                android:id="@+id/linearLayout1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
