@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.yongsu.floproject.R
+import com.yongsu.floproject.adapter.AlbumRVAdapter
 import com.yongsu.floproject.adapter.BannerVPAdapter
 import com.yongsu.floproject.adapter.PannelVPAdapter
 import com.yongsu.floproject.databinding.FragmentHomeBinding
+import com.yongsu.floproject.datas.Album
 
 class HomeFragment : Fragment() {
 
@@ -21,6 +24,8 @@ class HomeFragment : Fragment() {
     private val sliderHandler = Handler(Looper.getMainLooper())
     private var sliderRunnable: Runnable? = null
 
+    private val albumAdapter = AlbumRVAdapter(Dummy())
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,23 +33,33 @@ class HomeFragment : Fragment() {
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        binding.homeTodayAlbumFirstIv.setOnClickListener {
-            initAlbumFragment(binding.homeTodaySongTitleFirstTv.text.toString(),
-            binding.homeTodaySingerFirstTv.text.toString())
-        }
-        binding.homeTodayAlbumSecondIv.setOnClickListener {
-            initAlbumFragment(binding.homeTodaySongTitleSecondTv.text.toString(),
-                binding.homeTodaySingerSecondTv.text.toString())
-        }
-        binding.homeTodayAlbumThirdIv.setOnClickListener {
-            initAlbumFragment(binding.homeTodaySongTitleThirdTv.text.toString(),
-                binding.homeTodaySingerThirdTv.text.toString())
-        }
-
         initBannerVP()
         initPannelVP()
 
+        binding.homeTodayMusicAlbumRv.adapter = albumAdapter
+        val manager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.homeTodayMusicAlbumRv.layoutManager = manager
+
         return binding.root
+    }
+
+    private fun Dummy() : ArrayList<Album>{
+        val dummy1 = Album("Butter", "방탄소년단 (BTS)", R.drawable.img_album_exp)
+        val dummy2 = Album("Lilac", "아이유 (IU)", R.drawable.img_album_exp2)
+        val dummy3 = Album("Next Level", "에스파 (AESPA)", R.drawable.img_album_exp3)
+        val dummy4 = Album("Boy with Luv", "방탄소년단 (BTS)", R.drawable.img_album_exp4)
+        val dummy5 = Album("BBoom BBoom", "모모랜드 (MOMOLAND)", R.drawable.img_album_exp5)
+        val dummy6 = Album("Weekend", "태연 (Tae Yeon)", R.drawable.img_album_exp6)
+
+        val arr = ArrayList<Album>()
+        arr.add(dummy1)
+        arr.add(dummy2)
+        arr.add(dummy3)
+        arr.add(dummy4)
+        arr.add(dummy5)
+        arr.add(dummy6)
+
+        return arr
     }
 
     private fun initAlbumFragment(titleTV : String, singerTV : String){

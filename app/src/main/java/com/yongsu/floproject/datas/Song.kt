@@ -1,4 +1,4 @@
-package com.yongsu.floproject
+package com.yongsu.floproject.datas
 
 data class Song(
     val title : String = "",
