@@ -3,8 +3,10 @@ package com.yongsu.floproject
 import android.app.Activity
 import android.content.Intent
 import android.media.MediaPlayer
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -12,17 +14,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.google.gson.Gson
 import com.yongsu.floproject.databinding.ActivityMainBinding
 import com.yongsu.floproject.datas.Song
+import com.yongsu.floproject.foreground.Foregrounding
 import com.yongsu.floproject.fragment.HomeFragment
 import com.yongsu.floproject.fragment.LockerFragment
 import com.yongsu.floproject.fragment.LookFragment
 import com.yongsu.floproject.fragment.SearchFragment
-import java.io.IOException
 
 
 class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
 
     lateinit var binding: ActivityMainBinding
-
 
     private var gson: Gson = Gson()
 
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
             Toast.makeText(applicationContext, returnString, Toast.LENGTH_SHORT).show()
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_FLO)
@@ -44,6 +46,25 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
         setContentView(binding.root)
 
         initBottomNavigation()
+
+        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+            putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+        }
+        startActivity(intent)
+
+        binding.startServBtn.setOnClickListener {
+            Log.d("servicesss", "버튼 누름")
+            val intent = Intent(this@MainActivity, Foregrounding::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent)
+            } else {
+                startService(intent)
+            }
+        }
+        binding.stopServBtn.setOnClickListener {
+            val intent = Intent(this, Foregrounding::class.java)
+            stopService(intent)
+        }
 
         binding.mainNextSongBtn.setOnClickListener {
             val intent = Intent(this, SongActivity::class.java)

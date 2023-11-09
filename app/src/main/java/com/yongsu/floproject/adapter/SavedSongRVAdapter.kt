@@ -1,5 +1,6 @@
 package com.yongsu.floproject.adapter
 
+import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +8,8 @@ import com.yongsu.floproject.databinding.ItemSongBinding
 import com.yongsu.floproject.datas.Album
 
 class SavedSongRVAdapter(private val albumList: ArrayList<Album>): RecyclerView.Adapter<SavedSongRVAdapter.ViewHolder>() {
+
+    private val switchStatus = SparseBooleanArray()
 
     interface SavedSongClickListener{
         fun onRemoveSavedSong(position: Int)
@@ -42,6 +45,15 @@ class SavedSongRVAdapter(private val albumList: ArrayList<Album>): RecyclerView.
             binding.itemSongTitleTv.text = album.title
             binding.itemSongSingerTv.text = album.singer
             binding.itemSongImgIv.setImageResource(album.coverImg!!)
+
+            binding.switch1.isChecked = switchStatus[adapterPosition]
+            binding.switch1.setOnClickListener {
+                if (!binding.switch1.isChecked)
+                    switchStatus.put(adapterPosition, false)
+                else
+                    switchStatus.put(adapterPosition, true)
+                notifyItemChanged(adapterPosition)
+            }
         }
     }
 }
