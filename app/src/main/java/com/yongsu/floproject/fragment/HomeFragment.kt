@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.google.gson.Gson
 import com.yongsu.floproject.R
 import com.yongsu.floproject.adapter.AlbumRVAdapter
 import com.yongsu.floproject.adapter.BannerVPAdapter
@@ -24,7 +25,7 @@ class HomeFragment : Fragment() {
     private val sliderHandler = Handler(Looper.getMainLooper())
     private var sliderRunnable: Runnable? = null
 
-    private val albumAdapter = AlbumRVAdapter(Dummy())
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,9 +37,17 @@ class HomeFragment : Fragment() {
         initBannerVP()
         initPannelVP()
 
+        val albumAdapter = AlbumRVAdapter(Dummy())
+
         binding.homeTodayMusicAlbumRv.adapter = albumAdapter
         val manager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.homeTodayMusicAlbumRv.layoutManager = manager
+
+        albumAdapter.setMyItemClickListener(object: AlbumRVAdapter.MyItemClickListener{
+            override fun onItemClick(album: Album) {
+                initAlbumFragment(album.title.toString(), album.singer.toString(), album.coverImg.toString().toInt())
+            }
+        })
 
         return binding.root
     }
@@ -62,12 +71,13 @@ class HomeFragment : Fragment() {
         return arr
     }
 
-    private fun initAlbumFragment(titleTV : String, singerTV : String){
+    private fun initAlbumFragment(titleTV : String, singerTV : String, coverImg: Int){
         with(binding){
             val albumFragment = AlbumFragment().apply {
                 arguments = Bundle().apply {
                     putString("albumTitle", titleTV)
                     putString("albumSinger", singerTV)
+                    putInt("albumImg", coverImg)
                 }
             }
             val transaction = parentFragmentManager.beginTransaction()

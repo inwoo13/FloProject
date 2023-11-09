@@ -26,9 +26,11 @@ class AlbumFragment : Fragment() {
 
         val title = arguments?.getString("albumTitle")
         val singer = arguments?.getString("albumSinger")
+        val coverimg = arguments?.getInt("albumImg")
 
         binding.albumMusicTitleTv.text = title
         binding.albumSingerNameTv.text = singer
+        binding.albumAlbumIv.setImageResource(coverimg!!)
 
         initViewPager()
         initAlbumback()
