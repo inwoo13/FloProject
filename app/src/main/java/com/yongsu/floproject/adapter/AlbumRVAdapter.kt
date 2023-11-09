@@ -10,8 +10,8 @@ import com.yongsu.floproject.datas.Album
 class AlbumRVAdapter(private val albumList: ArrayList<Album>): RecyclerView.Adapter<AlbumRVAdapter.ViewHolder>() {
 
     interface MyItemClickListener{
-        fun onItemClick(album: Album)
-        //fun onRemoveAlbum(position: Int)
+        fun onItemClick(album: Album)   // 아이템 클릭시 수행
+        fun onPlayClick(album: Album)   // 재생 버튼 클릭시 수행
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -42,7 +42,9 @@ class AlbumRVAdapter(private val albumList: ArrayList<Album>): RecyclerView.Adap
         holder.itemView.setOnClickListener {
             mItemClickListener.onItemClick(albumList[position])
         }
-        // holder.binding.itemAlbumTitleTv.setOnClickListener { mItemClickListener.onRemoveAlbum(position) }
+        holder.binding.itemAlbumPlayImgIv.setOnClickListener {
+            mItemClickListener.onPlayClick(albumList[position])
+        }
     }
 
     override fun getItemCount(): Int = albumList.size

@@ -1,11 +1,13 @@
 package com.yongsu.floproject.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -16,8 +18,24 @@ import com.yongsu.floproject.adapter.BannerVPAdapter
 import com.yongsu.floproject.adapter.PannelVPAdapter
 import com.yongsu.floproject.databinding.FragmentHomeBinding
 import com.yongsu.floproject.datas.Album
+import com.yongsu.floproject.datas.Song
 
 class HomeFragment : Fragment() {
+
+    interface OnPlayClickListener {
+        fun onPlayClick(songData: Song)
+    }
+
+    private var listener: OnPlayClickListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnPlayClickListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement OnPlayClickListener")
+        }
+    }
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -25,7 +43,7 @@ class HomeFragment : Fragment() {
     private val sliderHandler = Handler(Looper.getMainLooper())
     private var sliderRunnable: Runnable? = null
 
-
+    private var gson: Gson = Gson()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,13 +65,23 @@ class HomeFragment : Fragment() {
             override fun onItemClick(album: Album) {
                 initAlbumFragment(album.title.toString(), album.singer.toString(), album.coverImg.toString().toInt())
             }
+
+            override fun onPlayClick(album: Album) {
+                val songData: Song = album.songs!!.get(0)
+                listener?.onPlayClick(songData) // MainActivity로 Song 데이터 전달
+            }
         })
 
         return binding.root
     }
 
     private fun Dummy() : ArrayList<Album>{
-        val dummy1 = Album("Butter", "방탄소년단 (BTS)", R.drawable.img_album_exp)
+
+        val songArr = ArrayList<Song>()
+        val songDummy1 = Song("TimmyTrumpet", "Timmy", 0, 96, false, "timmy_trumpet")
+        songArr.add(songDummy1)
+
+        val dummy1 = Album("Butter", "방탄소년단 (BTS)", R.drawable.img_album_exp, songArr)
         val dummy2 = Album("Lilac", "아이유 (IU)", R.drawable.img_album_exp2)
         val dummy3 = Album("Next Level", "에스파 (AESPA)", R.drawable.img_album_exp3)
         val dummy4 = Album("Boy with Luv", "방탄소년단 (BTS)", R.drawable.img_album_exp4)

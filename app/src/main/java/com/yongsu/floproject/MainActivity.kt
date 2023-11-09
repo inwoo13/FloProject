@@ -2,9 +2,11 @@ package com.yongsu.floproject
 
 import android.app.Activity
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.gson.Gson
@@ -14,14 +16,18 @@ import com.yongsu.floproject.fragment.HomeFragment
 import com.yongsu.floproject.fragment.LockerFragment
 import com.yongsu.floproject.fragment.LookFragment
 import com.yongsu.floproject.fragment.SearchFragment
+import java.io.IOException
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
 
     lateinit var binding: ActivityMainBinding
 
-    private var song: Song = Song()
+
     private var gson: Gson = Gson()
+
+    lateinit var Mainsong: Song
+    private var mediaPlayer: MediaPlayer? = null
 
     private val getResultText = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -39,15 +45,15 @@ class MainActivity : AppCompatActivity() {
 
         initBottomNavigation()
 
-        binding.mainPlayerCl.setOnClickListener {
+        binding.mainNextSongBtn.setOnClickListener {
             val intent = Intent(this, SongActivity::class.java)
             // title이라는 key값으로 song.title을 intent에 담아줌
-            intent.putExtra("title", song.title)
-            intent.putExtra("singer", song.singer)
-            intent.putExtra("second", song.second)
-            intent.putExtra("playTime", song.playTime)
-            intent.putExtra("isPlaying", song.isPlaying)
-            intent.putExtra("music", song.music)
+            intent.putExtra("title", Mainsong.title)
+            intent.putExtra("singer", Mainsong.singer)
+            intent.putExtra("second", Mainsong.second)
+            intent.putExtra("playTime", Mainsong.playTime)
+            intent.putExtra("isPlaying", Mainsong.isPlaying)
+            intent.putExtra("music", Mainsong.music)
             getResultText.launch(intent)
         }
 
@@ -56,6 +62,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        initMusicPlay()
     }
 
     override fun onStart() {
@@ -64,20 +71,79 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
         val songJson = sharedPreferences.getString("songData", null)
 
-        song = if(songJson == null){
+
+        Mainsong = if(songJson == null){
             Song("TimmyTrumpet", "Timmy", 0, 96, false, "timmy_trumpet")
         }else{
             // gson을 사용하여 songJson을 Song class의 자바 객체로 변환해줘라고 하는거임
             gson.fromJson(songJson, Song::class.java)
         }
 
-        setMiniPlayer(song)
     }
+
+    // 사용자가 포커스를 잃었을 때 음악 중지
+    override fun onPause() {
+        super.onPause()
+        setPlayerStatus(false)
+        Mainsong.second = ((binding.mainProgressSb.progress * Mainsong.playTime)/100)/1000
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer?.release() // 미디어 플레이어가 갖고 있던 리소스 해제
+        mediaPlayer = null // 미디어 플레이어 해제
+    }
+
+    override fun onPlayClick(songData: Song) {
+        Mainsong = songData
+        Mainsong.isPlaying = true
+        setMiniPlayer(Mainsong)
+        mediaPlayer?.start()
+    }
+
+    private fun initMusicPlay(){
+        with(binding){
+            // 음악이 정지해있을때 재생
+            mainMiniplayerBtn.setOnClickListener {
+                setPlayerStatus(true)
+            }
+            // 음악이 재생중일때 정지
+            mainPauseBtn.setOnClickListener {
+                setPlayerStatus(false)
+            }
+        }
+    }
+
+    private fun setPlayerStatus(isPlaying: Boolean){
+        with(binding){
+            Mainsong.isPlaying =  isPlaying
+
+            if(isPlaying){
+                binding.mainMiniplayerBtn.visibility = View.GONE
+                binding.mainPauseBtn.visibility = View.VISIBLE
+                mediaPlayer?.start()
+            } else {
+                binding.mainMiniplayerBtn.visibility = View.VISIBLE
+                binding.mainPauseBtn.visibility = View.GONE
+                if(mediaPlayer?.isPlaying == true){
+                    mediaPlayer?.pause()
+                }else{
+
+                }
+            }
+
+        }
+    }
+
 
     private fun setMiniPlayer(song: Song){
         binding.mainPlayingSongTitleTv.text = song.title
         binding.mainPlayingSingerTv.text = song.singer
         binding.mainProgressSb.progress = (song.second*100000)/song.playTime
+        val music = resources.getIdentifier(song.music, "raw", this.packageName)
+        mediaPlayer = MediaPlayer.create(this@MainActivity, music)
+        setPlayerStatus(song.isPlaying)
+
     }
 
     private fun initBottomNavigation(){
