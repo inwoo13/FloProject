@@ -25,8 +25,11 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
 
     private var gson: Gson = Gson()
 
-    lateinit var Mainsong: Song
     private var mediaPlayer: MediaPlayer? = null
+
+    val songs = arrayListOf<Song>()
+    lateinit var songDB: SongDatabase
+    var nowPos = 0
 
     private val getResultText = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -42,6 +45,8 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
         setTheme(R.style.Theme_FLO)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        initPlayList()
 
         //inputDummySongs() // 한번만 넣어도 됨
         initBottomNavigation()
@@ -66,9 +71,20 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
 //            stopService(intent)
 //        }
 
+
+        initClickListener()
+        initMusicPlay()
+    }
+
+    private fun initPlayList(){
+        songDB = SongDatabase.getInstance(this@MainActivity)!!
+        songs.addAll(songDB.songDao().getSongs())
+    }
+
+    private fun initClickListener(){
         binding.mainPlayerCl.setOnClickListener {
             val editor = getSharedPreferences("song", MODE_PRIVATE).edit()
-            editor.putInt("songId", Mainsong.id)
+            editor.putInt("songId", songs[nowPos].id)
             editor.apply()
 
             val intent = Intent(this, SongActivity::class.java)
@@ -80,7 +96,39 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
             startActivity(intent)
         }
 
-        initMusicPlay()
+        binding.mainNextSongBtn.setOnClickListener {
+            moveSong(1)
+        }
+        binding.mainBackSongBtn.setOnClickListener {
+            moveSong(-1)
+        }
+    }
+
+    private fun moveSong(direct: Int){
+        if(nowPos + direct < 0 ){
+            Toast.makeText(this@MainActivity, "first song", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if(nowPos + direct >= songs.size){
+            Toast.makeText(this@MainActivity, "last song", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        nowPos += direct
+
+        mediaPlayer?.release() // 미디어 플레이어가 갖고 있던 리소스 해제
+        mediaPlayer = null // 미디어 플레이어 해제
+
+        setMiniPlayer(songs[nowPos])
+    }
+
+    private fun getPlayingSongPosition(songId: Int): Int{
+        for(i in 0 until songs.size){
+            if(songs[i].id == songId){
+                return i
+            }
+        }
+        return 0
     }
 
     override fun onStart() {
@@ -106,22 +154,26 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
         // 0이면 id가 1인 것을 Mainsong에 저장
         // 아니라면 songId에 저장된 id를 가진 것을 Mainsong에 저장
         // 저장된 songId값으로 song초기화
-        Mainsong = if(songId == 0) {
-            songDB.songDao().getSong(1)
-        } else {
-            songDB.songDao().getSong(songId)
-        }
+//        Mainsong = if(songId == 0) {
+//            songDB.songDao().getSong(1)
+//        } else {
+//            songDB.songDao().getSong(songId)
+//        }
 
-        Log.d("song ID", Mainsong.id.toString())
-        setMiniPlayer(Mainsong)
+        nowPos = getPlayingSongPosition(songId)
+
+        Log.d("song ID", songs[nowPos].id.toString())
+        setMiniPlayer(songs[nowPos])
     }
+
+
 
 
     // 사용자가 포커스를 잃었을 때 음악 중지
     override fun onPause() {
         super.onPause()
         setPlayerStatus(false)
-        Mainsong.second = ((binding.mainProgressSb.progress * Mainsong.playTime)/100)/1000
+        songs[nowPos].second = ((binding.mainProgressSb.progress * songs[nowPos].playTime)/100)/1000
     }
 
     override fun onDestroy() {
@@ -131,9 +183,9 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
     }
 
     override fun onPlayClick(songData: Song) {
-        Mainsong = songData
-        Mainsong.isPlaying = true
-        setMiniPlayer(Mainsong)
+        songs[nowPos] = songData
+        songs[nowPos].isPlaying = true
+        setMiniPlayer(songs[nowPos])
         mediaPlayer?.start()
     }
 
@@ -152,7 +204,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
 
     private fun setPlayerStatus(isPlaying: Boolean){
         with(binding){
-            Mainsong.isPlaying =  isPlaying
+            songs[nowPos].isPlaying =  isPlaying
 
             if(isPlaying){
                 binding.mainMiniplayerBtn.visibility = View.GONE
