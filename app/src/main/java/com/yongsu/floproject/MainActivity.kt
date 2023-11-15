@@ -3,22 +3,20 @@ package com.yongsu.floproject
 import android.app.Activity
 import android.content.Intent
 import android.media.MediaPlayer
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.gson.Gson
 import com.yongsu.floproject.databinding.ActivityMainBinding
-import com.yongsu.floproject.datas.Song
-import com.yongsu.floproject.foreground.Foregrounding
+import com.yongsu.floproject.roomdb.entity.Song
 import com.yongsu.floproject.fragment.HomeFragment
 import com.yongsu.floproject.fragment.LockerFragment
 import com.yongsu.floproject.fragment.LookFragment
 import com.yongsu.floproject.fragment.SearchFragment
+import com.yongsu.floproject.roomdb.database.SongDatabase
 
 
 class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
@@ -45,26 +43,28 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        inputDummySongs()
         initBottomNavigation()
 
-        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-            putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
-        }
-        startActivity(intent)
-
-        binding.startServBtn.setOnClickListener {
-            Log.d("servicesss", "버튼 누름")
-            val intent = Intent(this@MainActivity, Foregrounding::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(intent)
-            } else {
-                startService(intent)
-            }
-        }
-        binding.stopServBtn.setOnClickListener {
-            val intent = Intent(this, Foregrounding::class.java)
-            stopService(intent)
-        }
+//        // Foreground
+//        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+//            putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+//        }
+//        startActivity(intent)
+//
+//        binding.startServBtn.setOnClickListener {
+//            Log.d("servicesss", "버튼 누름")
+//            val intent = Intent(this@MainActivity, Foregrounding::class.java)
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                startForegroundService(intent)
+//            } else {
+//                startService(intent)
+//            }
+//        }
+//        binding.stopServBtn.setOnClickListener {
+//            val intent = Intent(this, Foregrounding::class.java)
+//            stopService(intent)
+//        }
 
         binding.mainNextSongBtn.setOnClickListener {
             val intent = Intent(this, SongActivity::class.java)
@@ -88,19 +88,35 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
 
     override fun onStart() {
         super.onStart()
-        // 액티비티 전환이 될때 onStart()부터 해주기 때문에 여기서 Song 데이터를 가져옴
-        val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
-        val songJson = sharedPreferences.getString("songData", null)
+//        // 액티비티 전환이 될때 onStart()부터 해주기 때문에 여기서 Song 데이터를 가져옴
+//        val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
+//        val songJson = sharedPreferences.getString("songData", null)
+//
+//        Mainsong = if(songJson == null){
+//            Song("TimmyTrumpet", "Timmy", 0, 96, false, "timmy_trumpet")
+//        }else{
+//            // gson을 사용하여 songJson을 Song class의 자바 객체로 변환해줘라고 하는거임
+//            gson.fromJson(songJson, Song::class.java)
+//        }
 
+        // spf에 sharedpreference에 저장되어있던 값을 가져옴
+        val spf = getSharedPreferences("song", MODE_PRIVATE)
+        // spf Array의 가장 처음 song의 id를 가져옴
+        val songId = spf.getInt("songId", 0)
 
-        Mainsong = if(songJson == null){
-            Song("TimmyTrumpet", "Timmy", 0, 96, false, "timmy_trumpet")
-        }else{
-            // gson을 사용하여 songJson을 Song class의 자바 객체로 변환해줘라고 하는거임
-            gson.fromJson(songJson, Song::class.java)
+        val songDB = SongDatabase.getInstance(this)!!
+
+        // 0이면 id가 1인 것을 Mainsong에 저장
+        // 아니라면 songId에 저장된 id를 가진 것을 Mainsong에 저장
+        Mainsong = if(songId == 0) {
+            songDB.songDao().getSong(1)
+        } else {
+            songDB.songDao().getSong(songId)
         }
-
+        Log.d("song ID", Mainsong.id.toString())
+        setMiniPlayer(Mainsong)
     }
+
 
     // 사용자가 포커스를 잃었을 때 음악 중지
     override fun onPause() {
@@ -213,4 +229,108 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
             false
         }
     }
+
+    private fun inputDummySongs(){
+        val songDB = SongDatabase.getInstance(this@MainActivity)!!
+        val songs = songDB.songDao().getSongs()
+
+        if(songs.isNotEmpty()) return
+
+        songDB.songDao().insert(
+            Song(
+                "Lilac",
+                "아이유 (IU)",
+                0,
+                200,
+                false,
+                "music_lilac",
+                R.drawable.img_album_exp2,
+                false,
+            )
+        )
+
+        songDB.songDao().insert(
+            Song(
+                "Flu",
+                "아이유 (IU)",
+                0,
+                96,
+                false,
+                "timmy_trumpet",
+                R.drawable.img_album_exp2,
+                false,
+            )
+        )
+
+        songDB.songDao().insert(
+            Song(
+                "Butter",
+                "방탄소년단 (BTS)",
+                0,
+                190,
+                false,
+                "music_butter",
+                R.drawable.img_album_exp,
+                false,
+            )
+        )
+
+        songDB.songDao().insert(
+            Song(
+                "Next Level",
+                "에스파 (AESPA)",
+                0,
+                210,
+                false,
+                "music_next",
+                R.drawable.img_album_exp3,
+                false,
+            )
+        )
+
+        songDB.songDao().insert(
+            Song(
+                "Boy with Luv",
+                "music_boy",
+                0,
+                230,
+                false,
+                "music_lilac",
+                R.drawable.img_album_exp4,
+                false,
+            )
+        )
+
+        songDB.songDao().insert(
+            Song(
+                "BBoom BBoom",
+                "모모랜드 (MOMOLAND)",
+                0,
+                240,
+                false,
+                "music_bboom",
+                R.drawable.img_album_exp5,
+                false,
+            )
+        )
+
+        songDB.songDao().insert(
+            Song(
+                "Weekend",
+                "태연 (Tae Yeon)",
+                0,
+                246,
+                false,
+                "music_weekend",
+                R.drawable.img_album_exp6,
+                false,
+            )
+        )
+
+        val _songs = songDB.songDao().getSongs()
+        Log.d("DB data", _songs.toString())
+
+    }
+
+
 }

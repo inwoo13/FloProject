@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yongsu.floproject.R
 import com.yongsu.floproject.adapter.SavedSongRVAdapter
 import com.yongsu.floproject.databinding.FragmentSavedSongBinding
-import com.yongsu.floproject.datas.Album
+import com.yongsu.floproject.roomdb.entity.Album
 
 class SavedSongFragment : Fragment() {
 

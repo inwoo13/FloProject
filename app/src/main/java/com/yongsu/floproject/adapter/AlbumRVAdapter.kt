@@ -2,10 +2,9 @@ package com.yongsu.floproject.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.yongsu.floproject.databinding.ItemAlbumBinding
-import com.yongsu.floproject.datas.Album
+import com.yongsu.floproject.roomdb.entity.Album
 
 class AlbumRVAdapter(private val albumList: ArrayList<Album>): RecyclerView.Adapter<AlbumRVAdapter.ViewHolder>() {
 

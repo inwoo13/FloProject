@@ -1,4 +1,4 @@
-package com.yongsu.floproject.datas
+package com.yongsu.floproject.roomdb.entity
 
 data class Album(
     var title: String? = "",

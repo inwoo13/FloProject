@@ -7,7 +7,6 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -17,8 +16,8 @@ import com.yongsu.floproject.adapter.AlbumRVAdapter
 import com.yongsu.floproject.adapter.BannerVPAdapter
 import com.yongsu.floproject.adapter.PannelVPAdapter
 import com.yongsu.floproject.databinding.FragmentHomeBinding
-import com.yongsu.floproject.datas.Album
-import com.yongsu.floproject.datas.Song
+import com.yongsu.floproject.roomdb.entity.Album
+import com.yongsu.floproject.roomdb.entity.Song
 
 class HomeFragment : Fragment() {
 
