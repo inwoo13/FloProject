@@ -67,15 +67,12 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
 //        }
 
         binding.mainNextSongBtn.setOnClickListener {
+            val editor = getSharedPreferences("song", MODE_PRIVATE).edit()
+            editor.putInt("songId", Mainsong.id)
+            editor.apply()
+
             val intent = Intent(this, SongActivity::class.java)
-            // title이라는 key값으로 song.title을 intent에 담아줌
-            intent.putExtra("title", Mainsong.title)
-            intent.putExtra("singer", Mainsong.singer)
-            intent.putExtra("second", Mainsong.second)
-            intent.putExtra("playTime", Mainsong.playTime)
-            intent.putExtra("isPlaying", Mainsong.isPlaying)
-            intent.putExtra("music", Mainsong.music)
-            getResultText.launch(intent)
+            startActivity(intent)
         }
 
         binding.testbtn.setOnClickListener {
@@ -108,11 +105,13 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
 
         // 0이면 id가 1인 것을 Mainsong에 저장
         // 아니라면 songId에 저장된 id를 가진 것을 Mainsong에 저장
+        // 저장된 songId값으로 song초기화
         Mainsong = if(songId == 0) {
             songDB.songDao().getSong(1)
         } else {
             songDB.songDao().getSong(songId)
         }
+
         Log.d("song ID", Mainsong.id.toString())
         setMiniPlayer(Mainsong)
     }
