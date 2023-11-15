@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        inputDummySongs()
+        //inputDummySongs() // 한번만 넣어도 됨
         initBottomNavigation()
 
 //        // Foreground
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
 //            stopService(intent)
 //        }
 
-        binding.mainNextSongBtn.setOnClickListener {
+        binding.mainPlayerCl.setOnClickListener {
             val editor = getSharedPreferences("song", MODE_PRIVATE).edit()
             editor.putInt("songId", Mainsong.id)
             editor.apply()
@@ -281,7 +281,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
                 0,
                 210,
                 false,
-                "music_next",
+                "music_nextlevel",
                 R.drawable.img_album_exp3,
                 false,
             )
@@ -290,11 +290,11 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
         songDB.songDao().insert(
             Song(
                 "Boy with Luv",
-                "music_boy",
+                "방탄소년단 (BTS)",
                 0,
                 230,
                 false,
-                "music_lilac",
+                "music_boy",
                 R.drawable.img_album_exp4,
                 false,
             )

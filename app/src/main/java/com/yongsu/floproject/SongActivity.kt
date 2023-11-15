@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.google.gson.Gson
 import com.yongsu.floproject.databinding.ActivitySongBinding
 import com.yongsu.floproject.roomdb.database.SongDatabase
@@ -43,26 +44,9 @@ class SongActivity : AppCompatActivity() {
             binding.songSingerNameTv.text = intent.getStringExtra("singer")
         }
 
-        // 종료하면서 데이터 넘겨주기
-        binding.songDownIb.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java).apply{
-                putExtra("songsong", binding.songMusicTitleTv.text.toString())
-            }
-            setResult(Activity.RESULT_OK, intent)
-            if(!isFinishing) finish()
-        }
-
-        binding.songMiniplayerIv.setOnClickListener {
-            setPlayerStatus(true)
-        }
-
-        binding.songPauseIv.setOnClickListener {
-            setPlayerStatus(false)
-        }
-
-
         initRepeatBtn()
         initRandomBtn()
+        initClickListener()
     }
 
     // 사용자가 포커스를 잃었을 때 음악 중지
@@ -90,6 +74,53 @@ class SongActivity : AppCompatActivity() {
         timer.interrupt()
         mediaPlayer?.release() // 미디어 플레이어가 갖고 있던 리소스 해제
         mediaPlayer = null // 미디어 플레이어 해제
+    }
+
+    private fun initClickListener(){
+        // 종료하면서 데이터 넘겨주기
+        binding.songDownIb.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java).apply{
+                putExtra("songsong", binding.songMusicTitleTv.text.toString())
+            }
+            setResult(Activity.RESULT_OK, intent)
+            if(!isFinishing) finish()
+        }
+
+        binding.songMiniplayerIv.setOnClickListener {
+            setPlayerStatus(true)
+        }
+
+        binding.songPauseIv.setOnClickListener {
+            setPlayerStatus(false)
+        }
+
+        binding.songNextIv.setOnClickListener {
+            moveSong(1)
+        }
+        binding.songPreviousIv.setOnClickListener {
+            moveSong(-1)
+        }
+    }
+
+    private fun moveSong(direct: Int){
+        if(nowPos + direct < 0 ){
+            Toast.makeText(this@SongActivity, "first song", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if(nowPos + direct >= songs.size){
+            Toast.makeText(this@SongActivity, "last song", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        nowPos += direct
+
+        timer.interrupt()
+        startTimer()
+
+        mediaPlayer?.release() // 미디어 플레이어가 갖고 있던 리소스 해제
+        mediaPlayer = null // 미디어 플레이어 해제
+
+        setPlayer(songs[nowPos])
     }
 
     private fun initPlayList(){
@@ -125,6 +156,8 @@ class SongActivity : AppCompatActivity() {
         binding.songEndTimeTv.text = String.format("%02d:%02d",song.playTime / 60, song.playTime % 60)
         binding.songAlbumIv.setImageResource(song.coverImg!!)
         binding.songProgressSb.progress = (song.second * 1000 / song.playTime)
+
+        // 여기서 음악이 어차피 재시작되므로 따로 재시작할 필요는 없다
         val music = resources.getIdentifier(song.music, "raw", this.packageName)
         mediaPlayer = MediaPlayer.create(this@SongActivity, music)
         setPlayerStatus(song.isPlaying)
