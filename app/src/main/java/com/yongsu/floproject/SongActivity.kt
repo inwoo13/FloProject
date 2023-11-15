@@ -100,6 +100,11 @@ class SongActivity : AppCompatActivity() {
         binding.songPreviousIv.setOnClickListener {
             moveSong(-1)
         }
+
+        // 좋아요 버튼에 클릭리스너 달기
+        binding.songLikeIv.setOnClickListener {
+            setLike(songs[nowPos].isLike)
+        }
     }
 
     private fun moveSong(direct: Int){
@@ -121,6 +126,17 @@ class SongActivity : AppCompatActivity() {
         mediaPlayer = null // 미디어 플레이어 해제
 
         setPlayer(songs[nowPos])
+    }
+
+    private fun setLike(isLike: Boolean){
+        songs[nowPos].isLike = !isLike  // ex) 좋아요한 상태면 취소한 상태로 바꿈.(그 반대도 적용)
+        songDB.songDao().updateIsLikeById(!isLike, songs[nowPos].id)
+
+        if(!isLike){
+            binding.songLikeIv.setImageResource(R.drawable.ic_my_like_on)
+        }else{
+            binding.songLikeIv.setImageResource(R.drawable.ic_my_like_off)
+        }
     }
 
     private fun initPlayList(){
@@ -160,6 +176,13 @@ class SongActivity : AppCompatActivity() {
         // 여기서 음악이 어차피 재시작되므로 따로 재시작할 필요는 없다
         val music = resources.getIdentifier(song.music, "raw", this.packageName)
         mediaPlayer = MediaPlayer.create(this@SongActivity, music)
+
+        if(song.isLike){
+            binding.songLikeIv.setImageResource(R.drawable.ic_my_like_on)
+        }else{
+            binding.songLikeIv.setImageResource(R.drawable.ic_my_like_off)
+        }
+
         setPlayerStatus(song.isPlaying)
     }
 
