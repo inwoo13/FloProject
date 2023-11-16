@@ -1,12 +1,10 @@
 package com.yongsu.floproject.adapter
 
 import android.annotation.SuppressLint
-import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yongsu.floproject.databinding.ItemSongBinding
-import com.yongsu.floproject.roomdb.entity.Album
 import com.yongsu.floproject.roomdb.entity.Song
 
 class SavedSongRVAdapter(): RecyclerView.Adapter<SavedSongRVAdapter.ViewHolder>() {

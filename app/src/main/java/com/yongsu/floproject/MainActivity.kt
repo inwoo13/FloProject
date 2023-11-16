@@ -297,6 +297,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
                 "music_lilac",
                 R.drawable.img_album_exp2,
                 false,
+                1
             )
         )
 
@@ -310,6 +311,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
                 "timmy_trumpet",
                 R.drawable.img_album_exp2,
                 false,
+                1
             )
         )
 
@@ -323,6 +325,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
                 "music_butter",
                 R.drawable.img_album_exp,
                 false,
+                2
             )
         )
 
@@ -336,6 +339,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
                 "music_nextlevel",
                 R.drawable.img_album_exp3,
                 false,
+                3
             )
         )
 
@@ -349,6 +353,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
                 "music_boy",
                 R.drawable.img_album_exp4,
                 false,
+                2
             )
         )
 
@@ -362,6 +367,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
                 "music_bboom",
                 R.drawable.img_album_exp5,
                 false,
+                4
             )
         )
 
@@ -375,6 +381,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
                 "music_weekend",
                 R.drawable.img_album_exp6,
                 false,
+                5
             )
         )
 

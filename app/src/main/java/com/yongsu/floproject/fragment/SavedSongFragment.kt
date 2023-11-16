@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yongsu.floproject.R
 import com.yongsu.floproject.adapter.SavedSongRVAdapter
 import com.yongsu.floproject.databinding.FragmentSavedSongBinding
 import com.yongsu.floproject.roomdb.database.SongDatabase
-import com.yongsu.floproject.roomdb.entity.Album
 import com.yongsu.floproject.roomdb.entity.Song
 
 class SavedSongFragment : Fragment() {

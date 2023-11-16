@@ -1,8 +1,13 @@
 package com.yongsu.floproject.roomdb.entity
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "AlbumTable")
 data class Album(
-    var title: String? = "",
-    var singer: String? = "",
-    var coverImg: Int? = null,
-    var songs: ArrayList<Song>? = null  // 앨범이기 때문에 수록곡들을 넣는 list
-)
+    var title : String = "",
+    var singer : String = "",
+    var coverImg : Int? = null
+){
+    @PrimaryKey(autoGenerate = true) var id : Int = 0
+}
