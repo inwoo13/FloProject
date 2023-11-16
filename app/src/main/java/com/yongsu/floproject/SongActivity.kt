@@ -6,7 +6,9 @@ import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import com.google.gson.Gson
 import com.yongsu.floproject.databinding.ActivitySongBinding
@@ -134,8 +136,10 @@ class SongActivity : AppCompatActivity() {
 
         if(!isLike){
             binding.songLikeIv.setImageResource(R.drawable.ic_my_like_on)
+            initToast("좋아요 한 곡에 담겼습니다.")
         }else{
             binding.songLikeIv.setImageResource(R.drawable.ic_my_like_off)
+            initToast("좋아요 한 곡이 취소되었습니다.")
         }
     }
 
@@ -154,6 +158,29 @@ class SongActivity : AppCompatActivity() {
         Log.d("now Song ID", songs[nowPos].id.toString())
         startTimer()
         setPlayer(songs[nowPos])
+    }
+
+    private fun initToast(likeText: String){
+        // layoutInflater를 가져옴
+        val inflater = layoutInflater
+
+        // custom_toast 레이아웃을 inflate
+        val layout = inflater.inflate(R.layout.custom_toast, findViewById(R.id.custom_toast_container))
+
+        // textView text 설정
+        val text = layout.findViewById<TextView>(R.id.likeTv)
+        text.text = likeText
+
+        // 토스트 생성
+        val toast = Toast(applicationContext)
+        toast.duration = Toast.LENGTH_LONG
+        toast.view = layout
+
+        // 위치와 마진 설정
+        toast.setGravity(Gravity.FILL_HORIZONTAL or Gravity.BOTTOM, 0, 100)
+
+
+        toast.show()
     }
 
     private fun getPlayingSongPosition(songId: Int): Int{
