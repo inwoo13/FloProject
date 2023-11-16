@@ -1,11 +1,15 @@
 package com.yongsu.floproject.fragment
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yongsu.floproject.R
 import com.yongsu.floproject.adapter.SavedSongRVAdapter
 import com.yongsu.floproject.databinding.FragmentSavedSongBinding
 import com.yongsu.floproject.roomdb.database.SongDatabase
@@ -19,6 +23,31 @@ class SavedSongFragment : Fragment() {
 
     lateinit var songDB: SongDatabase
 
+    private var isSelect = false
+
+    // 메인에 전체 선택이 되었음을 알릴 수 있는 리스너
+    interface OnSelectClickListener{
+        fun onSelectClick(isSelectOn: Boolean)
+    }
+    private var listener: OnSelectClickListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // MainActivity가 OnSelectClickListener 인터페이스를 구현하고 있는지 확인하고
+        // 구현하고 있다면 listener로 등록합니다.
+        if (context is OnSelectClickListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement OnSelectClickListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        // Fragment가 Activity에서 분리될 때 listener를 초기화합니다.
+        listener = null
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,7 +58,41 @@ class SavedSongFragment : Fragment() {
 
         initRecyclerView()
 
+        // 전체선택을 눌러서 전체선택의 색을 변경하고 Main에 신호를 보냄
+        binding.allSelectTv.setOnClickListener {
+            isSelect = true
+            listener?.onSelectClick(true)
+            initSelectAll()
+        }
+
+        binding.allSelectTvOn.setOnClickListener {
+            isSelect = false
+            listener?.onSelectClick(false)
+            initSelectAll()
+        }
+
         return binding.root
+    }
+
+    fun deleteAll(){
+        isSelect = false
+        if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+            initSelectAll()
+        }
+    }
+
+    private fun initSelectAll(){
+        if(isSelect){
+            binding.checkIV.visibility = View.GONE
+            binding.allSelectTv.visibility=View.GONE
+            binding.checkIVSelect.visibility = View.VISIBLE
+            binding.allSelectTvOn.visibility = View.VISIBLE
+        }else{
+            binding.checkIV.visibility = View.VISIBLE
+            binding.allSelectTv.visibility=View.VISIBLE
+            binding.checkIVSelect.visibility = View.GONE
+            binding.allSelectTvOn.visibility = View.GONE
+        }
     }
 
     private fun initRecyclerView(){
@@ -46,34 +109,3 @@ class SavedSongFragment : Fragment() {
     }
 
 }
-
-//private fun Dummy() : ArrayList<Album>{
-//    val dummy1 = Album("Butter", "방탄소년단 (BTS)", R.drawable.img_album_exp)
-//    val dummy2 = Album("Lilac", "아이유 (IU)", R.drawable.img_album_exp2)
-//    val dummy3 = Album("Next Level", "에스파 (AESPA)", R.drawable.img_album_exp3)
-//    val dummy4 = Album("Boy with Luv", "방탄소년단 (BTS)", R.drawable.img_album_exp4)
-//    val dummy5 = Album("BBoom BBoom", "모모랜드 (MOMOLAND)", R.drawable.img_album_exp5)
-//    val dummy6 = Album("Weekend", "태연 (Tae Yeon)", R.drawable.img_album_exp6)
-//    val dummy7 = Album("Butter", "방탄소년단 (BTS)", R.drawable.img_album_exp)
-//    val dummy8 = Album("Lilac", "아이유 (IU)", R.drawable.img_album_exp2)
-//    val dummy9 = Album("Next Level", "에스파 (AESPA)", R.drawable.img_album_exp3)
-//    val dummy10 = Album("Boy with Luv", "방탄소년단 (BTS)", R.drawable.img_album_exp4)
-//    val dummy11 = Album("BBoom BBoom", "모모랜드 (MOMOLAND)", R.drawable.img_album_exp5)
-//    val dummy12 = Album("Weekend", "태연 (Tae Yeon)", R.drawable.img_album_exp6)
-//
-//    val arr = ArrayList<Album>()
-//    arr.add(dummy1)
-//    arr.add(dummy2)
-//    arr.add(dummy3)
-//    arr.add(dummy4)
-//    arr.add(dummy5)
-//    arr.add(dummy6)
-//    arr.add(dummy7)
-//    arr.add(dummy8)
-//    arr.add(dummy9)
-//    arr.add(dummy10)
-//    arr.add(dummy11)
-//    arr.add(dummy12)
-//
-//    return arr
-//}

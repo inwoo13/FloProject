@@ -15,12 +15,14 @@ import com.yongsu.floproject.roomdb.entity.Song
 import com.yongsu.floproject.fragment.HomeFragment
 import com.yongsu.floproject.fragment.LockerFragment
 import com.yongsu.floproject.fragment.LookFragment
+import com.yongsu.floproject.fragment.SavedSongFragment
 import com.yongsu.floproject.fragment.SearchFragment
 import com.yongsu.floproject.roomdb.database.AlbumDatabase
 import com.yongsu.floproject.roomdb.database.SongDatabase
 
 
-class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
+class MainActivity : AppCompatActivity(),
+    HomeFragment.OnPlayClickListener, SavedSongFragment.OnSelectClickListener {
 
     lateinit var binding: ActivityMainBinding
 
@@ -230,6 +232,49 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
         val music = resources.getIdentifier(song.music, "raw", this.packageName)
         mediaPlayer = MediaPlayer.create(this@MainActivity, music)
         setPlayerStatus(song.isPlaying)
+
+    }
+
+    override fun onSelectClick(isSelectOn: Boolean) {
+        // 삭제 등의 작업을 진행하는 창이 올라옴
+        if(isSelectOn){
+            //Toast.makeText(this@MainActivity, "true넘어옴", Toast.LENGTH_SHORT).show()
+            chooseBottom(isSelectOn)
+
+            binding.sheetBnv.setOnItemSelectedListener { item ->
+                when(item.itemId) {
+                    R.id.btn_delete -> {
+                        chooseBottom(isSelectOn)
+                        songDB.songDao().updateIsLikeAllFalse()
+
+                        val fragment = SavedSongFragment()
+                        fragment.deleteAll()
+
+                        chooseBottom(false)
+
+                        return@setOnItemSelectedListener true
+                    }
+
+                    else -> {
+                        return@setOnItemSelectedListener true
+                    }
+                }
+            }
+
+        }else{
+            //Toast.makeText(this@MainActivity, "false넘어옴", Toast.LENGTH_SHORT).show()
+            chooseBottom(isSelectOn)
+        }
+    }
+
+    private fun chooseBottom(isSelect: Boolean){
+        if(isSelect){
+            binding.mainBnv.visibility = View.GONE
+            binding.sheetBnv.visibility = View.VISIBLE
+        }else{
+            binding.mainBnv.visibility = View.VISIBLE
+            binding.sheetBnv.visibility = View.GONE
+        }
 
     }
 

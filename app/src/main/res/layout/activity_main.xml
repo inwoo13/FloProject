@@ -146,6 +146,7 @@
             android:id="@+id/main_bnv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="visible"
             app:itemIconSize="20dp"
             app:itemIconTint="@drawable/btm_color_selector"
             app:itemTextColor="@drawable/btm_color_selector"
@@ -154,6 +155,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_nav_menu" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/sheet_bnv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#3f3fff"
+            android:visibility="gone"
+            app:itemIconSize="20dp"
+            app:itemIconTint="@color/white"
+            app:itemTextColor="@color/white"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_sheet_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

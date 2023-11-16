@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/btn_play"
+        android:icon="@drawable/btn_editbar_play"
+        app:showAsAction="always"
+        android:enabled="true"
+        android:title="듣기"
+        tools:ignore="AlwaysShowAction" />
+    <item
+        android:id="@+id/btn_add_playlist"
+        android:icon="@drawable/btn_editbar_addplaylist"
+        app:showAsAction="always"
+        android:title="재생목록" />
+    <item
+        android:id="@+id/btn_mylist"
+        android:icon="@drawable/btn_editbar_mylist"
+        app:showAsAction="always"
+        android:title="내 리스트" />
+    <item
+        android:id="@+id/btn_delete"
+        android:icon="@drawable/btn_editbar_delete"
+        app:showAsAction="always"
+        android:title="삭제" />
+
+</menu>
