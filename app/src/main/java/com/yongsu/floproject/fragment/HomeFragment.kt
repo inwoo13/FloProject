@@ -4,9 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -24,7 +26,7 @@ import com.yongsu.floproject.roomdb.entity.Song
 class HomeFragment : Fragment() {
 
     interface OnPlayClickListener {
-        fun onPlayClick(songData: Song)
+        fun onPlayClick(albumId: Int)
     }
 
     private var listener: OnPlayClickListener? = null
@@ -75,8 +77,11 @@ class HomeFragment : Fragment() {
             }
 
             override fun onPlayClick(album: Album) {
-                //val songData: Song = album.songs!!.get(0)
-                //listener?.onPlayClick(songData) // MainActivity로 Song 데이터 전달
+                Log.d("id찾기", "${album.id}")
+                Log.d("id찾기", "${album.title}")
+
+
+                listener?.onPlayClick(album.id) // MainActivity로 AlbumId 전달
             }
         })
 

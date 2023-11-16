@@ -90,6 +90,8 @@ class SongActivity : AppCompatActivity() {
 
         binding.songMiniplayerIv.setOnClickListener {
             setPlayerStatus(true)
+
+            Log.d("id찾기", "${songs[nowPos].albumIdx}")
         }
 
         binding.songPauseIv.setOnClickListener {

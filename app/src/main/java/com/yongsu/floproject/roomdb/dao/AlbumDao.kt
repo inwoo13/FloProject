@@ -20,4 +20,7 @@ interface AlbumDao {
 
     @Query("SELECT * FROM AlbumTable")
     fun getAlbums(): List<Album>
+
+    @Query("SELECT * FROM AlbumTable WHERE ID = :ID")
+    fun getAlbumsById(ID: Int): List<Album>
 }

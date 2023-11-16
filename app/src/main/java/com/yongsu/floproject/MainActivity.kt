@@ -16,6 +16,7 @@ import com.yongsu.floproject.fragment.HomeFragment
 import com.yongsu.floproject.fragment.LockerFragment
 import com.yongsu.floproject.fragment.LookFragment
 import com.yongsu.floproject.fragment.SearchFragment
+import com.yongsu.floproject.roomdb.database.AlbumDatabase
 import com.yongsu.floproject.roomdb.database.SongDatabase
 
 
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
 
     val songs = arrayListOf<Song>()
     lateinit var songDB: SongDatabase
+    lateinit var albumDB: AlbumDatabase
     var nowPos = 0
 
     private val getResultText = registerForActivityResult(
@@ -113,6 +115,7 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
             Toast.makeText(this@MainActivity, "last song", Toast.LENGTH_SHORT).show()
             return
         }
+        songs[nowPos].isPlaying = false
 
         nowPos += direct
 
@@ -134,31 +137,11 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
     override fun onStart() {
         super.onStart()
 //        // 액티비티 전환이 될때 onStart()부터 해주기 때문에 여기서 Song 데이터를 가져옴
-//        val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
-//        val songJson = sharedPreferences.getString("songData", null)
-//
-//        Mainsong = if(songJson == null){
-//            Song("TimmyTrumpet", "Timmy", 0, 96, false, "timmy_trumpet")
-//        }else{
-//            // gson을 사용하여 songJson을 Song class의 자바 객체로 변환해줘라고 하는거임
-//            gson.fromJson(songJson, Song::class.java)
-//        }
 
         // spf에 sharedpreference에 저장되어있던 값을 가져옴
         val spf = getSharedPreferences("song", MODE_PRIVATE)
         // spf Array의 가장 처음 song의 id를 가져옴
         val songId = spf.getInt("songId", 0)
-
-        val songDB = SongDatabase.getInstance(this)!!
-
-        // 0이면 id가 1인 것을 Mainsong에 저장
-        // 아니라면 songId에 저장된 id를 가진 것을 Mainsong에 저장
-        // 저장된 songId값으로 song초기화
-//        Mainsong = if(songId == 0) {
-//            songDB.songDao().getSong(1)
-//        } else {
-//            songDB.songDao().getSong(songId)
-//        }
 
         nowPos = getPlayingSongPosition(songId)
 
@@ -182,12 +165,28 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
         mediaPlayer = null // 미디어 플레이어 해제
     }
 
-    override fun onPlayClick(songData: Song) {
-        songs[nowPos] = songData
-        songs[nowPos].isPlaying = true
-        setMiniPlayer(songs[nowPos])
-        mediaPlayer?.start()
+    override fun onPlayClick(albumId: Int) {
+        songs[nowPos].isPlaying = false
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer = null
+
+
+        songs.clear()   // 재생하려고 넣어놨던 데이터들을 제거
+        Log.d("id찾기", "$albumId")
+
+        // 앨범 아이디가 같은 모든 song을 불러와서 songs에 넣는다
+        songs.addAll(songDB.songDao().getSongsByalbumIdx(albumId))
+        // 처음 곡부터 재생할 것이므로 nowPos 초기화
+        nowPos = 0
+        if(songs.isNotEmpty()) {
+            songs[nowPos].isPlaying = true
+            setMiniPlayer(songs[nowPos])
+        } else {
+            Log.d("id찾기", "빔")
+        }
     }
+
 
     private fun initMusicPlay(){
         with(binding){
@@ -285,7 +284,9 @@ class MainActivity : AppCompatActivity(), HomeFragment.OnPlayClickListener {
         val songDB = SongDatabase.getInstance(this@MainActivity)!!
         val songs = songDB.songDao().getSongs()
 
-        if(songs.isNotEmpty()) return
+        if(songs.isNotEmpty()){
+            songDB.songDao().deleteAllSongs()
+        }
 
         songDB.songDao().insert(
             Song(
