@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -18,10 +17,8 @@ import com.yongsu.floproject.adapter.AlbumRVAdapter
 import com.yongsu.floproject.adapter.BannerVPAdapter
 import com.yongsu.floproject.adapter.PannelVPAdapter
 import com.yongsu.floproject.databinding.FragmentHomeBinding
-import com.yongsu.floproject.roomdb.database.AlbumDatabase
 import com.yongsu.floproject.roomdb.database.SongDatabase
 import com.yongsu.floproject.roomdb.entity.Album
-import com.yongsu.floproject.roomdb.entity.Song
 
 class HomeFragment : Fragment() {
 
@@ -49,7 +46,7 @@ class HomeFragment : Fragment() {
     private var gson: Gson = Gson()
 
     val albums = arrayListOf<Album>()
-    lateinit var albumDB: AlbumDatabase
+    lateinit var albumDB: SongDatabase
     var nowPos = 0
 
     override fun onCreateView(
@@ -62,7 +59,7 @@ class HomeFragment : Fragment() {
         initBannerVP()
         initPannelVP()
 
-        //initDummyAlbums()
+        initDummyAlbums()
         initAlbumList()
 
         val albumAdapter = AlbumRVAdapter(albums)
@@ -164,12 +161,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun initAlbumList(){
-        albumDB = AlbumDatabase.getInstance(requireActivity())!!
+        albumDB = SongDatabase.getInstance(requireActivity())!!
         albums.addAll(albumDB.albumDao().getAlbums())
     }
 
     private fun initDummyAlbums(){
-        val albumDB = AlbumDatabase.getInstance(requireActivity())!!
+        val albumDB = SongDatabase.getInstance(requireActivity())!!
         val albums = albumDB.albumDao().getAlbums()
 
         if(albums.isNotEmpty()) return

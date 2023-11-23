@@ -17,7 +17,6 @@ import com.yongsu.floproject.fragment.LockerFragment
 import com.yongsu.floproject.fragment.LookFragment
 import com.yongsu.floproject.fragment.SavedSongFragment
 import com.yongsu.floproject.fragment.SearchFragment
-import com.yongsu.floproject.roomdb.database.AlbumDatabase
 import com.yongsu.floproject.roomdb.database.SongDatabase
 
 
@@ -32,7 +31,6 @@ class MainActivity : AppCompatActivity(),
 
     val songs = arrayListOf<Song>()
     lateinit var songDB: SongDatabase
-    lateinit var albumDB: AlbumDatabase
     var nowPos = 0
 
     private val getResultText = registerForActivityResult(
@@ -52,7 +50,7 @@ class MainActivity : AppCompatActivity(),
 
         initPlayList()
 
-        //inputDummySongs() // 한번만 넣어도 됨
+        inputDummySongs() // 한번만 넣어도 됨
         initBottomNavigation()
 
 //        // Foreground
@@ -138,6 +136,9 @@ class MainActivity : AppCompatActivity(),
 
     override fun onStart() {
         super.onStart()
+
+        songs.clear()
+        initPlayList()
 //        // 액티비티 전환이 될때 onStart()부터 해주기 때문에 여기서 Song 데이터를 가져옴
 
         // spf에 sharedpreference에 저장되어있던 값을 가져옴
@@ -146,8 +147,8 @@ class MainActivity : AppCompatActivity(),
         val songId = spf.getInt("songId", 0)
 
         nowPos = getPlayingSongPosition(songId)
-
-        Log.d("song ID", songs[nowPos].id.toString())
+        Log.d("songIDID", nowPos.toString())
+        Log.d("songIDID", songs[nowPos].id.toString())
         setMiniPlayer(songs[nowPos])
     }
 

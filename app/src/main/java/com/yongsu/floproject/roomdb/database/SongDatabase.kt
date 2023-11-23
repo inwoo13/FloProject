@@ -6,15 +6,18 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.yongsu.floproject.roomdb.dao.AlbumDao
 import com.yongsu.floproject.roomdb.dao.SongDao
 import com.yongsu.floproject.roomdb.dao.UserDao
+import com.yongsu.floproject.roomdb.entity.Album
 import com.yongsu.floproject.roomdb.entity.Song
 import com.yongsu.floproject.roomdb.entity.User
 
-@Database(entities = [Song::class, User::class], version = 3)
+@Database(entities = [Song::class, User::class, Album::class], version = 4)
 abstract class SongDatabase: RoomDatabase() {
     abstract fun songDao(): SongDao
     abstract fun userDao(): UserDao
+    abstract fun albumDao(): AlbumDao
 
     companion object{
         private var instance: SongDatabase? = null
