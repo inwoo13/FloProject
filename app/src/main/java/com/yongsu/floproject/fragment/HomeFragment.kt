@@ -173,6 +173,7 @@ class HomeFragment : Fragment() {
 
         albumDB.albumDao().insertAlbum(
             Album(
+                0,
                 "IU 5th Album 'LILAC'",
                 "아이유 (IU)",
                 R.drawable.img_album_exp2
@@ -181,6 +182,7 @@ class HomeFragment : Fragment() {
 
         albumDB.albumDao().insertAlbum(
             Album(
+                1,
                 "Butter",
                 "방탄소년단 (BTS)",
                 R.drawable.img_album_exp
@@ -189,6 +191,7 @@ class HomeFragment : Fragment() {
 
         albumDB.albumDao().insertAlbum(
             Album(
+                2,
                 "iScreaM Vol.10: Next Level Remixes",
                 "에스파 (AESPA)",
                 R.drawable.img_album_exp2
@@ -197,6 +200,7 @@ class HomeFragment : Fragment() {
 
         albumDB.albumDao().insertAlbum(
             Album(
+                3,
                 "GREAT!",
                 "모모랜드",
                 R.drawable.img_album_exp5
@@ -205,6 +209,7 @@ class HomeFragment : Fragment() {
 
         albumDB.albumDao().insertAlbum(
             Album(
+                4,
                 "Weekend",
                 "태연 (TAEYEON)",
                 R.drawable.img_album_exp6

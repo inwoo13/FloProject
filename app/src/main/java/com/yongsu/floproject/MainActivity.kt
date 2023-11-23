@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity(),
 
         songs.clear()
         initPlayList()
-//        // 액티비티 전환이 될때 onStart()부터 해주기 때문에 여기서 Song 데이터를 가져옴
+        // 액티비티 전환이 될때 onStart()부터 해주기 때문에 여기서 Song 데이터를 가져옴
 
         // spf에 sharedpreference에 저장되어있던 값을 가져옴
         val spf = getSharedPreferences("song", MODE_PRIVATE)
@@ -344,7 +344,7 @@ class MainActivity : AppCompatActivity(),
                 "music_lilac",
                 R.drawable.img_album_exp2,
                 false,
-                1
+                0
             )
         )
 
@@ -358,7 +358,7 @@ class MainActivity : AppCompatActivity(),
                 "timmy_trumpet",
                 R.drawable.img_album_exp2,
                 false,
-                1
+                0
             )
         )
 
@@ -372,7 +372,7 @@ class MainActivity : AppCompatActivity(),
                 "music_butter",
                 R.drawable.img_album_exp,
                 false,
-                2
+                1
             )
         )
 
@@ -386,7 +386,7 @@ class MainActivity : AppCompatActivity(),
                 "music_nextlevel",
                 R.drawable.img_album_exp3,
                 false,
-                3
+                2
             )
         )
 
@@ -400,7 +400,7 @@ class MainActivity : AppCompatActivity(),
                 "music_boy",
                 R.drawable.img_album_exp4,
                 false,
-                2
+                1
             )
         )
 
@@ -414,7 +414,7 @@ class MainActivity : AppCompatActivity(),
                 "music_bboom",
                 R.drawable.img_album_exp5,
                 false,
-                4
+                3
             )
         )
 
@@ -428,7 +428,7 @@ class MainActivity : AppCompatActivity(),
                 "music_weekend",
                 R.drawable.img_album_exp6,
                 false,
-                5
+                4
             )
         )
 
