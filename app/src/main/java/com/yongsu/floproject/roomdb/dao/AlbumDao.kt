@@ -29,7 +29,7 @@ interface AlbumDao {
     fun likeAlbum(like: Like)
 
     @Query("DELETE FROM LikeTable WHERE userId = :userId AND albumId = :albumId")
-    fun disLikeAlbum(userId: Int, albumId: Int)
+    fun disLikedAlbum(userId: Int, albumId: Int)
 
     @Query("SELECT id FROM LikeTable WHERE userId = :userId AND albumId = :albumId")
     fun isLikedAlbum(userId: Int, albumId: Int): Int?

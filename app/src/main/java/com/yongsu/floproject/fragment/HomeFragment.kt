@@ -70,7 +70,7 @@ class HomeFragment : Fragment() {
 
         albumAdapter.setMyItemClickListener(object: AlbumRVAdapter.MyItemClickListener{
             override fun onItemClick(album: Album) {
-                initAlbumFragment(album.title.toString(), album.singer.toString(), album.coverImg.toString().toInt())
+                initAlbumFragment(album)
             }
 
             override fun onPlayClick(album: Album) {
@@ -109,13 +109,13 @@ class HomeFragment : Fragment() {
 //        return arr
 //    }
 
-    private fun initAlbumFragment(titleTV : String, singerTV : String, coverImg: Int){
+    private fun initAlbumFragment(album: Album){
         with(binding){
             val albumFragment = AlbumFragment().apply {
                 arguments = Bundle().apply {
-                    putString("albumTitle", titleTV)
-                    putString("albumSinger", singerTV)
-                    putInt("albumImg", coverImg)
+                    val gson = Gson()
+                    val albumJson = gson.toJson(album)
+                    putString("album", albumJson)
                 }
             }
             val transaction = parentFragmentManager.beginTransaction()
