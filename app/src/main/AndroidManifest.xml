@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yongsu.floproject">
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -11,6 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FLO">
+        <activity
+            android:name=".auth.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.LoginActivity"
+            android:exported="false" />
         <activity
             android:name=".TestActivity"
             android:exported="false" />
@@ -27,8 +33,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".foreground.ForegroundService" android:exported="false" android:enabled="true" />
 
+        <service
+            android:name=".foreground.ForegroundService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>
