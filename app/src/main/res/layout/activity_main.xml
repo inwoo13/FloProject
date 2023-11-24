@@ -24,7 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/main_bnv"
-            android:paddingVertical="5dp"
             android:background="#F9F9F9">
 
             <SeekBar

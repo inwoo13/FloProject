@@ -12,6 +12,7 @@ import com.yongsu.floproject.R
 import com.yongsu.floproject.adapter.AlbumLockerRVAdapter
 import com.yongsu.floproject.databinding.FragmentSavedAlbumBinding
 import com.yongsu.floproject.roomdb.database.SongDatabase
+import com.yongsu.floproject.roomdb.entity.Album
 
 class SavedAlbumFragment : Fragment() {
     lateinit var binding: FragmentSavedAlbumBinding
@@ -42,7 +43,10 @@ class SavedAlbumFragment : Fragment() {
 
         albumRVAdapter.setMyItemClickListener(object : AlbumLockerRVAdapter.MyItemClickListener{
             override fun onRemoveSong(songId: Int) {
+                val album = albumDB.albumDao().getAlbumsById(songId)
+
                 albumDB.albumDao().getLikedAlbums(getJwt())
+                albumDB.albumDao().disLikedAlbum(getJwt(), album[0].id)
             }
         })
 
