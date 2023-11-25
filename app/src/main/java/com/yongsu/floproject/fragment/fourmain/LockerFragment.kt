@@ -50,17 +50,24 @@ class LockerFragment : Fragment() {
         initViews()
     }
 
-    private fun getJwt():Int{
-        // activity?를 붙이는 이유는 프래그먼트에서 사용할 때의 방법이기 떄문
-        val spf = activity?.getSharedPreferences("auth", AppCompatActivity.MODE_PRIVATE)
-        return spf!!.getInt("jwt", 0)
+//    private fun getJwt():Int{
+//        // activity?를 붙이는 이유는 프래그먼트에서 사용할 때의 방법이기 떄문
+//        val spf = activity?.getSharedPreferences("auth", AppCompatActivity.MODE_PRIVATE)
+//        return spf!!.getInt("jwt", 0)
+//    }
+
+    private fun getJwt(): String? {
+        val spf = activity?.getSharedPreferences("auth2", AppCompatActivity.MODE_PRIVATE)
+
+        return spf!!.getString("jwt", "")
     }
 
 
+
     private fun initViews(){
-        val jwt: Int = getJwt()
+        val jwt: String = getJwt()!!
         Log.d("jwtjwt", "$jwt")
-        if(jwt == 0){
+        if(jwt == ""){
             binding.lockerLoginTv.text = "로그인"
             binding.lockerLoginTv.setOnClickListener {
                 startActivity(Intent(activity, LoginActivity::class.java))
@@ -76,7 +83,7 @@ class LockerFragment : Fragment() {
     }
 
     private fun logout() {
-        val spf = activity?.getSharedPreferences("auth", AppCompatActivity.MODE_PRIVATE)
+        val spf = activity?.getSharedPreferences("auth2", AppCompatActivity.MODE_PRIVATE)
         val editor = spf!!.edit()
         // jwt라는 키에 해당하는 값을 없앰
         editor.remove("jwt")

@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity(),
 //            stopService(intent)
 //        }
 
+        Log.d("LOGIN/RESPONSE", "main문 : ${getJwt().toString()}")
 
         initClickListener()
         initMusicPlay()
@@ -132,6 +133,12 @@ class MainActivity : AppCompatActivity(),
             }
         }
         return 0
+    }
+
+    private fun getJwt(): String? {
+        val spf = getSharedPreferences("auth2", MODE_PRIVATE)
+
+        return spf!!.getString("jwt", "")
     }
 
     override fun onStart() {

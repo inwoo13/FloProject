@@ -91,13 +91,11 @@ class SignUpActivity : AppCompatActivity(), SignUpView {
     override fun onSignUpFailure(code: Int, message: String) {
         Log.e("SIGNUP-ACT/RESPONSE", code.toString())
         when(code) {
-                    2016, 2017 -> {
+                    2016, 2017, 2018 -> {
                         binding.signUpEmailErrorTv.text = message
                         binding.signUpEmailErrorTv.visibility = View.VISIBLE
                     }
-                    2018 -> {
 
-                    }
                 }
     }
 }
