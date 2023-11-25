@@ -11,10 +11,10 @@ import com.google.gson.Gson
 import com.yongsu.floproject.R
 import com.yongsu.floproject.adapter.AlbumVPAdapter
 import com.yongsu.floproject.databinding.FragmentAlbumBinding
+import com.yongsu.floproject.fragment.fourmain.HomeFragment
 import com.yongsu.floproject.roomdb.database.SongDatabase
 import com.yongsu.floproject.roomdb.entity.Album
 import com.yongsu.floproject.roomdb.entity.Like
-import com.yongsu.floproject.roomdb.entity.Song
 
 class AlbumFragment : Fragment() {
 

@@ -1,4 +1,4 @@
-package com.yongsu.floproject.fragment
+package com.yongsu.floproject.fragment.fourmain
 
 import android.content.Context
 import android.os.Bundle
@@ -17,6 +17,9 @@ import com.yongsu.floproject.adapter.AlbumRVAdapter
 import com.yongsu.floproject.adapter.BannerVPAdapter
 import com.yongsu.floproject.adapter.PannelVPAdapter
 import com.yongsu.floproject.databinding.FragmentHomeBinding
+import com.yongsu.floproject.fragment.AlbumFragment
+import com.yongsu.floproject.fragment.BannerFragment
+import com.yongsu.floproject.fragment.PannelFragment
 import com.yongsu.floproject.roomdb.database.SongDatabase
 import com.yongsu.floproject.roomdb.entity.Album
 

@@ -1,4 +1,4 @@
-package com.yongsu.floproject.fragment
+package com.yongsu.floproject.fragment.fourmain
 
 import android.content.Intent
 import android.os.Bundle

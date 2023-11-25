@@ -12,11 +12,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.google.gson.Gson
 import com.yongsu.floproject.databinding.ActivityMainBinding
 import com.yongsu.floproject.roomdb.entity.Song
-import com.yongsu.floproject.fragment.HomeFragment
-import com.yongsu.floproject.fragment.LockerFragment
-import com.yongsu.floproject.fragment.LookFragment
+import com.yongsu.floproject.fragment.fourmain.HomeFragment
+import com.yongsu.floproject.fragment.fourmain.LockerFragment
+import com.yongsu.floproject.fragment.fourmain.LookFragment
 import com.yongsu.floproject.fragment.SavedSongFragment
-import com.yongsu.floproject.fragment.SearchFragment
+import com.yongsu.floproject.fragment.fourmain.SearchFragment
 import com.yongsu.floproject.roomdb.database.SongDatabase
 
 

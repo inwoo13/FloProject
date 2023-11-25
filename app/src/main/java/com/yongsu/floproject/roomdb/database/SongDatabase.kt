@@ -14,7 +14,7 @@ import com.yongsu.floproject.roomdb.entity.Like
 import com.yongsu.floproject.roomdb.entity.Song
 import com.yongsu.floproject.roomdb.entity.User
 
-@Database(entities = [Song::class, User::class, Album::class, Like::class], version = 5)
+@Database(entities = [Song::class, User::class, Album::class, Like::class], version = 6)
 abstract class SongDatabase: RoomDatabase() {
     abstract fun songDao(): SongDao
     abstract fun userDao(): UserDao
