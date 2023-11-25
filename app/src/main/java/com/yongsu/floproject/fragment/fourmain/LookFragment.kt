@@ -1,18 +1,24 @@
 package com.yongsu.floproject.fragment.fourmain
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
+import com.yongsu.floproject.adapter.SongRVAdapter
 import com.yongsu.floproject.databinding.FragmentLookBinding
+import com.yongsu.floproject.retrofit.LookView
+import com.yongsu.floproject.retrofit.module.SongService
+import com.yongsu.floproject.retrofit.response.FloChartResult
 
-class LookFragment : Fragment() {
+class LookFragment : Fragment(), LookView {
 
     private var _binding: FragmentLookBinding? = null
     private val binding get() = _binding!!
+    private lateinit var floCharAdapter: SongRVAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,6 +30,39 @@ class LookFragment : Fragment() {
         initTabLayout()
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getSongs()
+    }
+
+    private fun initRecyclerView(result: FloChartResult) {
+        floCharAdapter = SongRVAdapter(requireContext(), result)
+
+        binding.lookFloChartRv.adapter = floCharAdapter
+    }
+
+    private fun getSongs() {
+        val songService = SongService()
+        songService.setLookView(this)
+
+        songService.getSongs()
+
+    }
+
+    override fun onGetSongLoading() {
+        binding.lookLoadingPb.visibility = View.VISIBLE
+    }
+
+    override fun onGetSongSuccess(code: Int, result: FloChartResult) {
+        binding.lookLoadingPb.visibility = View.GONE
+        initRecyclerView(result)
+    }
+
+    override fun onGetSongFailure(code: Int, message: String) {
+        binding.lookLoadingPb.visibility = View.GONE
+        Log.d("LOOK-FRAG/SONG-RESPONSE", message)
     }
 
     private fun initTabLayout(){
