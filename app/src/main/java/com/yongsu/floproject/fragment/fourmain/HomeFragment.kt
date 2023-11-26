@@ -20,10 +20,15 @@ import com.yongsu.floproject.databinding.FragmentHomeBinding
 import com.yongsu.floproject.fragment.AlbumFragment
 import com.yongsu.floproject.fragment.BannerFragment
 import com.yongsu.floproject.fragment.PannelFragment
+import com.yongsu.floproject.retrofit.AlbumView
+import com.yongsu.floproject.retrofit.module.AlbumService
+import com.yongsu.floproject.retrofit.module.SongService
+import com.yongsu.floproject.retrofit.response.AlbumResult
+import com.yongsu.floproject.retrofit.response.FloChartAlbums
 import com.yongsu.floproject.roomdb.database.SongDatabase
 import com.yongsu.floproject.roomdb.entity.Album
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), AlbumView {
 
     interface OnPlayClickListener {
         fun onPlayClick(albumId: Int)
@@ -65,26 +70,6 @@ class HomeFragment : Fragment() {
         initDummyAlbums()
         initAlbumList()
 
-        val albumAdapter = AlbumRVAdapter(albums)
-
-        binding.homeTodayMusicAlbumRv.adapter = albumAdapter
-        val manager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.homeTodayMusicAlbumRv.layoutManager = manager
-
-        albumAdapter.setMyItemClickListener(object: AlbumRVAdapter.MyItemClickListener{
-            override fun onItemClick(album: Album) {
-                initAlbumFragment(album)
-            }
-
-            override fun onPlayClick(album: Album) {
-                Log.d("id찾기", "${album.id}")
-                Log.d("id찾기", "${album.title}")
-
-
-                listener?.onPlayClick(album.id) // MainActivity로 AlbumId 전달
-            }
-        })
-
         return binding.root
     }
 
@@ -112,7 +97,7 @@ class HomeFragment : Fragment() {
 //        return arr
 //    }
 
-    private fun initAlbumFragment(album: Album){
+    private fun initAlbumFragment(album: FloChartAlbums){
         with(binding){
             val albumFragment = AlbumFragment().apply {
                 arguments = Bundle().apply {
@@ -166,6 +151,54 @@ class HomeFragment : Fragment() {
     private fun initAlbumList(){
         albumDB = SongDatabase.getInstance(requireActivity())!!
         albums.addAll(albumDB.albumDao().getAlbums())
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        getAlbums()
+    }
+
+    private fun getAlbums() {
+        Log.d("HOME/ALBUM-RESPONSE", "넘어는 가냐")
+        val albumService = AlbumService()
+        albumService.setAlbumView(this)
+
+        Log.d("HOME/ALBUM-RESPONSE", "어디까지 가는거지")
+        albumService.getAlbums()
+
+    }
+
+    override fun onGetAlbumLoading() {
+        Log.d("HOME/ALBUM-RESPONSE", "여기냐")
+    }
+
+    override fun onGetAlbumSuccess(code: Int, result: AlbumResult) {
+        Log.d("HOME/ALBUM-RESPONSE", "성공 $result")
+        val albumAdapter = AlbumRVAdapter(requireContext(), result)
+
+        binding.homeTodayMusicAlbumRv.adapter = albumAdapter
+        val manager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.homeTodayMusicAlbumRv.layoutManager = manager
+
+        albumAdapter.setMyItemClickListener(object: AlbumRVAdapter.MyItemClickListener{
+
+            override fun onItemClick(album: FloChartAlbums) {
+                initAlbumFragment(album)
+            }
+
+            override fun onPlayClick(album: FloChartAlbums) {
+                Log.d("id찾기", "${album.albumIdx}")
+                Log.d("id찾기", "${album.title}")
+
+
+                listener?.onPlayClick(album.albumIdx) // MainActivity로 AlbumId 전달
+            }
+        })
+    }
+
+    override fun onGetAlbumFailure(code: Int, message: String) {
+        Log.d("HOME/ALBUM-RESPONSE", "$code $message")
     }
 
     private fun initDummyAlbums(){
