@@ -67,8 +67,8 @@ class HomeFragment : Fragment(), AlbumView {
         initBannerVP()
         initPannelVP()
 
-        initDummyAlbums()
-        initAlbumList()
+        //initDummyAlbums()
+        //initAlbumList()
 
         return binding.root
     }
@@ -148,10 +148,10 @@ class HomeFragment : Fragment(), AlbumView {
         sliderHandler.post(sliderRunnable!!)
     }
 
-    private fun initAlbumList(){
-        albumDB = SongDatabase.getInstance(requireActivity())!!
-        albums.addAll(albumDB.albumDao().getAlbums())
-    }
+//    private fun initAlbumList(){
+//        albumDB = SongDatabase.getInstance(requireActivity())!!
+//        albums.addAll(albumDB.albumDao().getAlbums())
+//    }
 
     override fun onStart() {
         super.onStart()
@@ -201,56 +201,56 @@ class HomeFragment : Fragment(), AlbumView {
         Log.d("HOME/ALBUM-RESPONSE", "$code $message")
     }
 
-    private fun initDummyAlbums(){
-        val albumDB = SongDatabase.getInstance(requireActivity())!!
-        val albums = albumDB.albumDao().getAlbums()
-
-        if(albums.isNotEmpty()) return
-
-        albumDB.albumDao().insertAlbum(
-            Album(
-                0,
-                "IU 5th Album 'LILAC'",
-                "아이유 (IU)",
-                R.drawable.img_album_exp2
-            )
-        )
-
-        albumDB.albumDao().insertAlbum(
-            Album(
-                1,
-                "Butter",
-                "방탄소년단 (BTS)",
-                R.drawable.img_album_exp
-            )
-        )
-
-        albumDB.albumDao().insertAlbum(
-            Album(
-                2,
-                "iScreaM Vol.10: Next Level Remixes",
-                "에스파 (AESPA)",
-                R.drawable.img_album_exp2
-            )
-        )
-
-        albumDB.albumDao().insertAlbum(
-            Album(
-                3,
-                "GREAT!",
-                "모모랜드",
-                R.drawable.img_album_exp5
-            )
-        )
-
-        albumDB.albumDao().insertAlbum(
-            Album(
-                4,
-                "Weekend",
-                "태연 (TAEYEON)",
-                R.drawable.img_album_exp6
-            )
-        )
-
-    }
+//    private fun initDummyAlbums(){
+//        val albumDB = SongDatabase.getInstance(requireActivity())!!
+//        val albums = albumDB.albumDao().getAlbums()
+//
+//        if(albums.isNotEmpty()) return
+//
+//        albumDB.albumDao().insertAlbum(
+//            Album(
+//                0,
+//                "IU 5th Album 'LILAC'",
+//                "아이유 (IU)",
+//                R.drawable.img_album_exp2
+//            )
+//        )
+//
+//        albumDB.albumDao().insertAlbum(
+//            Album(
+//                1,
+//                "Butter",
+//                "방탄소년단 (BTS)",
+//                R.drawable.img_album_exp
+//            )
+//        )
+//
+//        albumDB.albumDao().insertAlbum(
+//            Album(
+//                2,
+//                "iScreaM Vol.10: Next Level Remixes",
+//                "에스파 (AESPA)",
+//                R.drawable.img_album_exp2
+//            )
+//        )
+//
+//        albumDB.albumDao().insertAlbum(
+//            Album(
+//                3,
+//                "GREAT!",
+//                "모모랜드",
+//                R.drawable.img_album_exp5
+//            )
+//        )
+//
+//        albumDB.albumDao().insertAlbum(
+//            Album(
+//                4,
+//                "Weekend",
+//                "태연 (TAEYEON)",
+//                R.drawable.img_album_exp6
+//            )
+//        )
+//
+//    }
 }

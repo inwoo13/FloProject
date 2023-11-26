@@ -1,17 +1,20 @@
 package com.yongsu.floproject.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 import com.yongsu.floproject.R
 import com.yongsu.floproject.adapter.AlbumVPAdapter
 import com.yongsu.floproject.databinding.FragmentAlbumBinding
 import com.yongsu.floproject.fragment.fourmain.HomeFragment
+import com.yongsu.floproject.retrofit.response.FloChartAlbums
 import com.yongsu.floproject.roomdb.database.SongDatabase
 import com.yongsu.floproject.roomdb.entity.Album
 import com.yongsu.floproject.roomdb.entity.Like
@@ -34,9 +37,15 @@ class AlbumFragment : Fragment() {
         // Home에서 넘어온 데이터 받아오기
         val albumData = arguments?.getString("album")
         val gson = Gson()
-        val album = gson.fromJson(albumData, Album::class.java)
+        val album = gson.fromJson(albumData, FloChartAlbums::class.java)
+
+        val sharedPreferences = activity?.getSharedPreferences("album", AppCompatActivity.MODE_PRIVATE)
+        val editor = sharedPreferences?.edit()
+        editor?.putString("albumIdx", "${album.albumIdx}")
+        editor?.apply()
+
         // Home에서 넘어온 데이터 반영
-        isLiked = isLikedAlbum(album.id)
+        isLiked = isLikedAlbum(album.albumIdx)
         setInit(album)
         setOnClickListeners(album)
 
@@ -46,10 +55,15 @@ class AlbumFragment : Fragment() {
         return binding.root
     }
 
-    private fun setInit(album: Album){
+    private fun setInit(album: FloChartAlbums){
         binding.albumMusicTitleTv.text = album.title.toString()
         binding.albumSingerNameTv.text = album.singer.toString()
-        binding.albumAlbumIv.setImageResource(album.coverImg!!)
+        if(album.coverImgUrl == "" || album.coverImgUrl == null){
+
+        } else {
+            Log.d("image",album.coverImgUrl )
+            Glide.with(requireContext()).load(album.coverImgUrl).into(binding.albumAlbumIv)
+        }
         if(isLiked){
             binding.albumLikeIv.setImageResource(R.drawable.ic_my_like_on)
         }else{
@@ -91,15 +105,15 @@ class AlbumFragment : Fragment() {
 
     }
 
-    private fun setOnClickListeners(album: Album){
+    private fun setOnClickListeners(album: FloChartAlbums){
         val userId = getJwt()
         binding.albumLikeIv.setOnClickListener {
             if(isLiked){
                 binding.albumLikeIv.setImageResource(R.drawable.ic_my_like_off)
-                disLikedAlbum(album.id)
+                disLikedAlbum(album.albumIdx)
             } else {
                 binding.albumLikeIv.setImageResource(R.drawable.ic_my_like_on)
-                likeAlbum(userId, album.id)
+                likeAlbum(userId, album.albumIdx)
             }
         }
     }
